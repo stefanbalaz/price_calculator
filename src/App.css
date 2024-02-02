@@ -1,0 +1,12 @@
+/* Import Bootstrap CSS */
+@import "../node_modules/bootstrap//dist/css/bootstrap.min.css";
+
+img {
+  max-width: 40%;
+  height: auto;
+}
+
+.container {
+  min-width: 200px;
+  /*  background-color: blueviolet; */
+}
