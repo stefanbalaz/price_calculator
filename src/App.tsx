@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+/* import { useState } from "react";
 import "./App.css";
 import "bootstrap";
-import React from "react";
 
 function App() {
   const [drinkPrice, setDrinkPrice] = useState<number | null>(0.75);
@@ -107,6 +106,87 @@ function App() {
       bottleReceivedAmount,
       crateReceivedAmount,
     });
+
+    setErrorMessage(null);
+    setTotalPriceGross(calculatedPrice.totalPriceGross);
+    setTotalPriceNet(calculatedPrice.totalPriceNet);
+  } */
+
+import React, { useState } from "react";
+import "./App.css";
+import "bootstrap";
+
+function App() {
+  const [drinkPrice, setDrinkPrice] = useState<number | null>(0.75);
+  const [bottlePrice, setBottlePrice] = useState<number | null>(0.13);
+  const [cratePrice, setCratePrice] = useState<number | null>(1.66);
+  const [vat, setVat] = useState<number | null>(0.2);
+  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(null);
+  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(null);
+  const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
+    number | null
+  >(null);
+  const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
+    null
+  );
+  const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
+  const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [vatMultiplier, setVatMultiplier] = useState<number>(0);
+
+  function calculatePrice(): {
+    totalPriceNet: number;
+    totalPriceGross: number;
+  } {
+    const vatMultiplier = vat !== null ? 1 + vat : 1;
+    const drinkPriceTotalNet = (drinkSoldAmount || 0) * (drinkPrice || 0);
+    const drinkPriceTotalGross =
+      (drinkSoldAmount || 0) * (drinkPrice || 0) * vatMultiplier;
+    const bottlePriceSoldTotal = (drinkSoldAmount || 0) * (bottlePrice || 0);
+    const cratePriceSoldTotal = (crateSoldAmount || 0) * (cratePrice || 0);
+    const bottlePriceReceivedTotal =
+      (bottleReceivedAmount || 0) * (bottlePrice || 0);
+    const cratePriceReceivedTotal =
+      (crateReceivedAmount || 0) * (cratePrice || 0);
+
+    const totalPriceNet =
+      drinkPriceTotalNet +
+      bottlePriceSoldTotal +
+      cratePriceSoldTotal -
+      bottlePriceReceivedTotal -
+      cratePriceReceivedTotal;
+
+    const totalPriceGross =
+      drinkPriceTotalGross +
+      bottlePriceSoldTotal +
+      cratePriceSoldTotal -
+      bottlePriceReceivedTotal -
+      cratePriceReceivedTotal;
+
+    setVatMultiplier(vatMultiplier);
+
+    return { totalPriceNet, totalPriceGross };
+  }
+
+  function handleButtonClick(): void {
+    if (
+      !drinkPrice ||
+      drinkSoldAmount === null ||
+      crateSoldAmount === null ||
+      bottleReceivedAmount === null ||
+      crateReceivedAmount === null ||
+      drinkSoldAmount <= 0 ||
+      crateSoldAmount <= 0 ||
+      bottleReceivedAmount <= 0 ||
+      crateReceivedAmount <= 0
+    ) {
+      setErrorMessage("Please fill out all fields with values greater than 0.");
+      setTotalPriceGross(0);
+      console.error("Validation error.");
+      return;
+    }
+
+    const calculatedPrice = calculatePrice();
 
     setErrorMessage(null);
     setTotalPriceGross(calculatedPrice.totalPriceGross);
