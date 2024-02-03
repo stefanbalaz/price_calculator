@@ -10,3 +10,8 @@ img {
   min-width: 200px;
   /*  background-color: blueviolet; */
 }
+
+.main-container {
+  height: 100vh; /* Adjust the height as needed */
+  overflow: auto;
+}
