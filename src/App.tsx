@@ -1,12 +1,12 @@
-/* import { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import "bootstrap";
 
 function App() {
   const [drinkPrice, setDrinkPrice] = useState<number | null>(0.75);
-  const [bottlePrice, setBottlePrice] = useState<number | null>(0.13);
-  const [cratePrice, setCratePrice] = useState<number | null>(1.66);
-  const [vat, setVat] = useState<number | null>(0.2); // Update initial state based on your preference
+  const [bottlePrice] = useState<number | null>(0.13);
+  const [cratePrice] = useState<number | null>(1.66);
+  const [vat] = useState<number | null>(0.2);
   const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(null);
   const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(null);
   const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
@@ -15,155 +15,37 @@ function App() {
   const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
     null
   );
-  const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
+  // const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
   const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [vatMultiplier, setVatMultiplier] = useState<number>(0);
-
-  function calculatePrice({
-    drinkPrice,
-    bottlePrice,
-    cratePrice,
-    vat,
-    drinkSoldAmount,
-    crateSoldAmount,
-    bottleReceivedAmount,
-    crateReceivedAmount,
-  }: {
-    drinkPrice: number | null;
-    bottlePrice: number | null;
-    cratePrice: number | null;
-    vat: number | null;
-    drinkSoldAmount: number;
-    crateSoldAmount: number;
-    bottleReceivedAmount: number;
-    crateReceivedAmount: number;
-  }): { totalPriceNet: number; totalPriceGross: number } {
-    const vatMultiplier = vat !== null ? 1 + vat : 1; // Handle "Vat = 0"  case
-    console.log("vatMultiplier", vatMultiplier);
-    const drinkPriceTotalNet = drinkSoldAmount * (drinkPrice || 0);
-    console.log("drinkPriceTotalNet", drinkPriceTotalNet);
-    const drinkPriceTotalGross =
-      drinkSoldAmount * (drinkPrice || 0) * vatMultiplier;
-    console.log("drinkPriceTotalGross", drinkPriceTotalGross);
-    const bottlePriceSoldTotal = drinkSoldAmount * (bottlePrice || 0);
-    console.log("bottlePriceSoldTotal", bottlePriceSoldTotal);
-    const cratePriceSoldTotal = crateSoldAmount * (cratePrice || 0);
-    console.log("cratePriceSoldTotal", cratePriceSoldTotal);
-    const bottlePriceReceivedTotal = bottleReceivedAmount * (bottlePrice || 0);
-    console.log("bottlePriceReceivedTotal", bottlePriceReceivedTotal);
-    const cratePriceReceivedTotal = crateReceivedAmount * (cratePrice || 0);
-    console.log("cratePriceReceivedTotal", cratePriceReceivedTotal);
-
-    const totalPriceNet =
-      drinkPriceTotalNet +
-      bottlePriceSoldTotal +
-      cratePriceSoldTotal -
-      bottlePriceReceivedTotal -
-      cratePriceReceivedTotal;
-
-    console.log("totalPriceNet", totalPriceNet);
-
-    const totalPriceGross =
-      drinkPriceTotalGross +
-      bottlePriceSoldTotal +
-      cratePriceSoldTotal -
-      bottlePriceReceivedTotal -
-      cratePriceReceivedTotal;
-
-    console.log("totalPriceGross", totalPriceGross);
-
-    setVatMultiplier(vatMultiplier);
-
-    return { totalPriceNet, totalPriceGross };
-  }
-
-  function handleButtonClick(): void {
-    if (
-      drinkPrice === null ||
-      drinkSoldAmount === null ||
-      crateSoldAmount === null ||
-      bottleReceivedAmount === null ||
-      crateReceivedAmount === null ||
-      drinkSoldAmount <= 0 ||
-      crateSoldAmount <= 0 ||
-      bottleReceivedAmount <= 0 ||
-      crateReceivedAmount <= 0
-    ) {
-      setErrorMessage("Please fill out all fields with values greater than 0.");
-      setTotalPriceGross(0);
-      console.error("Validation error.");
-      return;
-    }
-
-    const calculatedPrice = calculatePrice({
-      drinkPrice,
-      bottlePrice,
-      cratePrice,
-      vat,
-      drinkSoldAmount,
-      crateSoldAmount,
-      bottleReceivedAmount,
-      crateReceivedAmount,
-    });
-
-    setErrorMessage(null);
-    setTotalPriceGross(calculatedPrice.totalPriceGross);
-    setTotalPriceNet(calculatedPrice.totalPriceNet);
-  } */
-
-import React, { useState } from "react";
-import "./App.css";
-import "bootstrap";
-
-function App() {
-  const [drinkPrice, setDrinkPrice] = useState<number | null>(0.75);
-  const [bottlePrice, setBottlePrice] = useState<number | null>(0.13);
-  const [cratePrice, setCratePrice] = useState<number | null>(1.66);
-  const [vat, setVat] = useState<number | null>(0.2);
-  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(null);
-  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(null);
-  const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
-    number | null
-  >(null);
-  const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
-    null
-  );
-  const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
-  const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [vatMultiplier, setVatMultiplier] = useState<number>(0);
 
   function calculatePrice(): {
     totalPriceNet: number;
     totalPriceGross: number;
   } {
     const vatMultiplier = vat !== null ? 1 + vat : 1;
+
     const drinkPriceTotalNet = (drinkSoldAmount || 0) * (drinkPrice || 0);
     const drinkPriceTotalGross =
       (drinkSoldAmount || 0) * (drinkPrice || 0) * vatMultiplier;
-    const bottlePriceSoldTotal = (drinkSoldAmount || 0) * (bottlePrice || 0);
-    const cratePriceSoldTotal = (crateSoldAmount || 0) * (cratePrice || 0);
     const bottlePriceReceivedTotal =
-      (bottleReceivedAmount || 0) * (bottlePrice || 0);
+      (bottleReceivedAmount || 0) * (drinkPrice || 0);
     const cratePriceReceivedTotal =
       (crateReceivedAmount || 0) * (cratePrice || 0);
 
     const totalPriceNet =
       drinkPriceTotalNet +
-      bottlePriceSoldTotal +
-      cratePriceSoldTotal -
-      bottlePriceReceivedTotal -
+      (drinkSoldAmount || 0) * (bottlePrice || 0) -
+      (bottleReceivedAmount || 0) * (bottlePrice || 0) +
+      (crateSoldAmount || 0) * (cratePrice || 0) -
       cratePriceReceivedTotal;
 
     const totalPriceGross =
       drinkPriceTotalGross +
-      bottlePriceSoldTotal +
-      cratePriceSoldTotal -
-      bottlePriceReceivedTotal -
+      (drinkSoldAmount || 0) * (bottlePrice || 0) -
+      bottlePriceReceivedTotal +
+      (crateSoldAmount || 0) * (cratePrice || 0) -
       cratePriceReceivedTotal;
-
-    setVatMultiplier(vatMultiplier);
 
     return { totalPriceNet, totalPriceGross };
   }
@@ -190,7 +72,7 @@ function App() {
 
     setErrorMessage(null);
     setTotalPriceGross(calculatedPrice.totalPriceGross);
-    setTotalPriceNet(calculatedPrice.totalPriceNet);
+    // setTotalPriceNet(calculatedPrice.totalPriceNet);
   }
 
   return (
@@ -390,10 +272,13 @@ function App() {
                         <tbody>
                           <tr>
                             <th>Drink</th>
-                            <td>{vat * 100}%</td>
+                            <td>{(vat ?? 0) * 100}%</td>
                             <td>{drinkPrice || 0}€</td>
                             <td>
-                              {(drinkPrice * (1 + (vat || 0))).toFixed(2)}€
+                              {((drinkPrice ?? 0) * (1 + (vat || 0))).toFixed(
+                                2
+                              )}
+                              €
                             </td>
                           </tr>
                           <tr>
@@ -431,14 +316,16 @@ function App() {
                             <td>{drinkSoldAmount}</td>
                             <td>
                               +
-                              {(drinkSoldAmount * (drinkPrice || 0)).toFixed(2)}
+                              {(
+                                (drinkSoldAmount ?? 0) * (drinkPrice || 0)
+                              ).toFixed(2)}
                               €
                             </td>
                             <td>
                               +
                               {(
-                                drinkSoldAmount *
-                                (drinkPrice * (1 + (vat || 0)))
+                                (drinkSoldAmount ?? 0) *
+                                ((drinkPrice ?? 0) * (1 + (vat || 0)))
                               ).toFixed(2)}
                               €
                             </td>
@@ -450,8 +337,8 @@ function App() {
                             <td>
                               +
                               {(
-                                drinkSoldAmount *
-                                (drinkPrice * (1 + (vat || 0)))
+                                (drinkSoldAmount ?? 0) *
+                                ((drinkPrice ?? 0) * (1 + (vat || 0)))
                               ).toFixed(2)}
                               €
                             </td>
@@ -479,13 +366,17 @@ function App() {
                             <td>{drinkSoldAmount}</td>
                             <td>
                               +
-                              {(drinkSoldAmount * (bottlePrice || 0)).toFixed(
-                                2
-                              )}
+                              {(
+                                (drinkSoldAmount ?? 0) * (bottlePrice || 0)
+                              ).toFixed(2)}
                               €
                             </td>
                             <td>
-                              +{(drinkSoldAmount * bottlePrice).toFixed(2)}€
+                              +
+                              {(
+                                (drinkSoldAmount ?? 0) * (bottlePrice ?? 0)
+                              ).toFixed(2)}
+                              €
                             </td>
                           </tr>
                           <tr>
@@ -494,12 +385,15 @@ function App() {
                             <td>
                               -
                               {(
-                                bottleReceivedAmount * (bottlePrice || 0)
+                                (bottleReceivedAmount ?? 0) * (bottlePrice || 0)
                               ).toFixed(2)}
                               €
                             </td>
                             <td>
-                              -{(bottleReceivedAmount * bottlePrice).toFixed(2)}
+                              -
+                              {(
+                                (bottleReceivedAmount ?? 0) * (bottlePrice ?? 0)
+                              ).toFixed(2)}
                               €
                             </td>
                           </tr>
@@ -509,8 +403,8 @@ function App() {
                             <td></td>
                             <td>
                               {(
-                                drinkSoldAmount * bottlePrice -
-                                bottleReceivedAmount * bottlePrice
+                                (drinkSoldAmount ?? 0) * (bottlePrice ?? 0) -
+                                (bottleReceivedAmount ?? 0) * (bottlePrice ?? 0)
                               ).toFixed(2)}
                               €
                             </td>
@@ -538,14 +432,16 @@ function App() {
                             <td>{crateSoldAmount}</td>
                             <td>
                               +
-                              {(crateSoldAmount * (cratePrice || 0)).toFixed(2)}
+                              {(
+                                (crateSoldAmount ?? 0) * (cratePrice || 0)
+                              ).toFixed(2)}
                               €
                             </td>
                             <td>
                               +
                               {(
-                                crateSoldAmount *
-                                (cratePrice * (1 + (vat || 0)))
+                                (crateSoldAmount ?? 0) *
+                                ((cratePrice ?? 0) * (1 + (vat || 0)))
                               ).toFixed(2)}
                               €
                             </td>
@@ -556,15 +452,15 @@ function App() {
                             <td>
                               -
                               {(
-                                crateReceivedAmount * (cratePrice || 0)
+                                (crateReceivedAmount ?? 0) * (cratePrice || 0)
                               ).toFixed(2)}
                               €
                             </td>
                             <td>
                               -
                               {(
-                                crateReceivedAmount *
-                                (cratePrice * (1 + (vat || 0)))
+                                (crateReceivedAmount ?? 0) *
+                                ((cratePrice ?? 0) * (1 + (vat || 0)))
                               ).toFixed(2)}
                               €
                             </td>
@@ -575,14 +471,30 @@ function App() {
                             <td></td>
                             <td>
                               {(
-                                (
-                                  crateSoldAmount *
-                                  (cratePrice * (1 + (vat || 0)))
-                                ).toFixed(2) -
-                                (
-                                  crateReceivedAmount *
-                                  (cratePrice * (1 + (vat || 0)))
-                                ).toFixed(2)
+                                Number(
+                                  (
+                                    (crateSoldAmount !== null &&
+                                    crateSoldAmount !== undefined
+                                      ? crateSoldAmount
+                                      : 0) *
+                                    (Number(
+                                      cratePrice !== null ? cratePrice : 0
+                                    ) *
+                                      (1 + Number(vat !== null ? vat : 0)))
+                                  ).toFixed(2)
+                                ) -
+                                Number(
+                                  (
+                                    (crateReceivedAmount !== null &&
+                                    crateReceivedAmount !== undefined
+                                      ? crateReceivedAmount
+                                      : 0) *
+                                    (Number(
+                                      cratePrice !== null ? cratePrice : 0
+                                    ) *
+                                      (1 + Number(vat !== null ? vat : 0)))
+                                  ).toFixed(2)
+                                )
                               ).toFixed(2)}
                               €
                             </td>
