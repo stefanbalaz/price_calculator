@@ -7,7 +7,7 @@ function App() {
   const [bottlePrice] = useState<number | null>(0.13);
   const [cratePrice] = useState<number | null>(1.66);
   const [vat] = useState<number | null>(0.2);
-  const [vatMultiplier, setVatMultiplier] = useState<number | null>(null);
+  //const [vatMultiplier, setVatMultiplier] = useState<number | null>(null);
   const [drinkPriceTotalNet, setDrinkPriceTotalNet] = useState<number | null>(
     null
   );
@@ -102,7 +102,7 @@ function App() {
     return {
       totalPriceNet,
       totalPriceGross,
-      vatMultiplier,
+      // vatMultiplier,
       drinkPriceTotalNet,
       drinkPriceTotalGross,
       bottlePriceSoldTotal,
