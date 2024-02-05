@@ -1,17 +1,10 @@
 /* Import Bootstrap CSS */
 @import "../node_modules/bootstrap//dist/css/bootstrap.min.css";
 
-/* img {
-  max-width: 40%;
-  height: auto;
-} */
-
-/* .container {
-  min-width: 200px;
-} */
-
-/* .main-container {
-  height: 100vh; 
-  overflow: auto;
+.card {
+  background-color: #faf9f5;
 }
- */
+
+body {
+  font-family: "Roboto", sans-serif;
+}
