@@ -407,7 +407,7 @@ function App() {
                     className="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body">
+                    <div className="accordion-body table-responsive">
                       <table className="table mb-4 text-left table-success table-striped table-hover table-bordered">
                         <thead>
                           <tr>
@@ -506,7 +506,7 @@ function App() {
                     className="accordion-collapse collapse"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body">
+                    <div className="accordion-body table-responsive">
                       <table className="table mb-4 text-left table-secondary table-striped table-hover table-bordered">
                         <thead>
                           <tr>
@@ -568,7 +568,7 @@ function App() {
                     className="accordion-collapse collapse"
                     data-bs-parent="#accordionExample"
                   >
-                    <div className="accordion-body">
+                    <div className="accordion-body table-responsive">
                       {/* Display the drink table */}
                       <table className="table mb-4 text-left caption-top table-danger table-striped table-hover table-bordered">
                         <caption>DRINK</caption>
