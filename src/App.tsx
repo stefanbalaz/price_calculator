@@ -28,9 +28,9 @@ function App() {
   );
   const [bottleAmountSubtotal, setBottleAmountSubtotal] = useState<
     number | null
-  >(null);
+  >(0);
   const [crateAmountSubtotal, setCrateAmountSubtotal] = useState<number | null>(
-    null
+    0
   );
   const [cratePriceSoldTotal, setCratePriceSoldTotal] = useState<number | null>(
     null
@@ -38,13 +38,13 @@ function App() {
   const [cratePriceReceivedTotal, setCratePriceReceivedTotal] = useState<
     number | null
   >(null);
-  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(null);
-  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(null);
+  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(0);
+  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(0);
   const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
     number | null
-  >(null);
+  >(0);
   const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
-    null
+    0
   );
   const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
   const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
@@ -154,15 +154,22 @@ function App() {
 
   return (
     <>
-      <div className="main-container">
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-          <div className="card p-4 col-lg-4 col-md-6 col-sm-12">
-            <div className="d-flex flex-column align-items-center mb-3 fw-bold">
-              <img src="../amate_logo.png" alt="Amate_Logo" />
-              <hr className="my-2 w-100 mb-4" />
-              <h1 className="fw-bold fs-5">PRICE CALCULATOR</h1>
-            </div>
-
+      <div className="container-xl card">
+        <div className="row">
+          <div className="col-3">
+            <img
+              src="../amate_logo.png"
+              className="img-fluid pb-3 pt-3"
+              alt="Amate_Logo"
+            />
+          </div>
+          <div className="col-9 align-self-center">
+            <h1 className="">PRICE CALCULATOR</h1>
+          </div>
+          <hr className="" />
+        </div>
+        <div className="row column-gap-4">
+          <div className="col">
             {/* Error message */}
             {errorMessage && (
               <div className="alert alert-danger" role="alert">
@@ -170,7 +177,7 @@ function App() {
               </div>
             )}
 
-            <form>
+            <form className="">
               {/* Input for Drink Price */}
               <div className="input-group mb-3" data-test-id="drinkPriceNet">
                 <div className="form-floating flex-grow-1">
@@ -291,10 +298,10 @@ function App() {
               </div>
 
               {/* Button to calculate delivery price */}
-              <div className="d-flex justify-content-center mt-3">
+              <div className="d-grid mb-3">
                 <button
                   type="button"
-                  className="btn btn-info text-white fw-bold mb-3"
+                  className="btn btn-primary col-6 mx-auto"
                   onClick={handleButtonClick}
                   data-test-id="calculateButton"
                 >
@@ -303,236 +310,191 @@ function App() {
               </div>
             </form>
 
-            {/* Display the calculated delivery gross price */}
-            <div className="d-flex flex-column align-items-center fw-bold mb-3">
-              <hr className="my-2 w-100 mb-3" />
-              <h2 className="fw-bold fs-5">Price (Gross):</h2>
-              <h2>{totalPriceGross.toFixed(2)}€</h2>
-            </div>
-
-            {/* Display the calculated delivery net price */}
-            <div className="d-flex flex-column align-items-center fw-bold mb-3">
-              <hr className="my-2 w-100 mb-3" />
-              <h2 className="fw-bold fs-5">Price (Net):</h2>
-              <h2>{totalPriceNet.toFixed(2)}€</h2>
-            </div>
-
-            {/* Accordion */}
-            <div className="accordion" id="accordionPriceDetailsWrapper">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
-                  <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
-                  >
-                    Calculation Details
-                  </button>
-                </h2>
-                <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#accordionPriceDetailsWrapper"
-                  style={{ overflow: "auto" }}
-                >
-                  <div className="accordion-body">
-                    {/* Display the calculation details */}
-                    <div className="d-flex flex-column align-items-center">
-                      <div>
-                        <div className="align-items-start fw-bold fs-4">
-                          PRICE
-                        </div>
-                        <table className="table mb-4 text-left">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>VAT</th>
-                              <th>Net</th>
-                              <th>Gross</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th>Drink</th>
-                              <td>{(vat ?? 0) * 100}%</td>
-                              <td>{drinkPriceNet || 0}€</td>
-                              <td>
-                                {(
-                                  (drinkPriceNet ?? 0) *
-                                  (1 + (vat || 0))
-                                ).toFixed(2)}
-                                €
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Bottle</th>
-                              <td>0%</td>
-                              <td>{bottlePrice || 0}€</td>
-                              <td>{bottlePrice || 0}€</td>
-                            </tr>
-                            <tr>
-                              <th>Crate</th>
-                              <td>0%</td>
-                              <td>{cratePrice || 0}€</td>
-                              <td>{cratePrice || 0}€</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-
-                      <div>
-                        <div className="align-items-start fw-bold fs-4">
-                          DRINK
-                        </div>
-                        <table className="table mb-4 text-left">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>#</th>
-                              <th>Net</th>
-                              <th>Gross</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th>Sold: </th>
-                              <td>+{drinkSoldAmount}</td>
-                              <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
-                              <td>
-                                +{(drinkPriceTotalGross ?? 0).toFixed(2)}€
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Total: </th>
-                              <td>+{drinkSoldAmount}</td>
-                              <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
-                              <td>
-                                +{(drinkPriceTotalGross ?? 0).toFixed(2)}€
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-
-                      <div>
-                        <div className="align-items-start fw-bold fs-4">
-                          BOTTLE
-                        </div>
-                        <table className="table mb-4 text-left">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>#</th>
-                              <th>Net</th>
-                              <th>Gross</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th>Sold: </th>
-                              <td>+{drinkSoldAmount}</td>
-                              <td>
-                                +{(bottlePriceSoldTotal ?? 0).toFixed(2)}€
-                              </td>
-                              <td>
-                                +{(bottlePriceSoldTotal ?? 0).toFixed(2)}€
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Received: </th>
-                              <td>-{bottleReceivedAmount}</td>
-                              <td>
-                                -{(bottlePriceReceivedTotal ?? 0).toFixed(2)}€
-                              </td>
-                              <td>
-                                -{(bottlePriceReceivedTotal ?? 0).toFixed(2)}€
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Total: </th>
-                              <td>
-                                {(bottleAmountSubtotal ?? 0) > 0
-                                  ? `+${bottleAmountSubtotal}`
-                                  : bottleAmountSubtotal}
-                              </td>
-                              <td>
-                                {(bottlePriceSubtotal ?? 0) > 0
-                                  ? `+${bottlePriceSubtotal}`
-                                  : (bottlePriceSubtotal ?? 0).toFixed(2)}
-                                €
-                              </td>
-                              <td>
-                                {(bottlePriceSubtotal ?? 0) > 0
-                                  ? `+${bottlePriceSubtotal}`
-                                  : (bottlePriceSubtotal ?? 0).toFixed(2)}
-                                €
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-
-                      <div>
-                        <div className="align-items-start fw-bold fs-4">
-                          CRATE
-                        </div>
-                        <table className="table mb-4 text-left">
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>#</th>
-                              <th>Net</th>
-                              <th>Gross</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th>Sold: </th>
-                              <td>+{crateSoldAmount}</td>
-                              <td>+{(cratePriceSoldTotal ?? 0).toFixed(2)}€</td>
-                              <td>+{(cratePriceSoldTotal ?? 0).toFixed(2)}€</td>
-                            </tr>
-                            <tr>
-                              <th>Received: </th>
-                              <td>-{crateReceivedAmount}</td>
-                              <td>
-                                -{(cratePriceReceivedTotal ?? 0).toFixed(2)}€
-                              </td>
-                              <td>
-                                -{(cratePriceReceivedTotal ?? 0).toFixed(2)}€
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Total: </th>
-                              <td>
-                                {(crateAmountSubtotal ?? 0) > 0
-                                  ? `+${crateAmountSubtotal}`
-                                  : crateAmountSubtotal}
-                              </td>
-                              <td>
-                                {(cratePriceSubtotal ?? 0) > 0
-                                  ? `+${cratePriceSubtotal}`
-                                  : (cratePriceSubtotal ?? 0).toFixed(2)}
-                                €
-                              </td>
-                              <td>
-                                {(cratePriceSubtotal ?? 0) > 0
-                                  ? `+${cratePriceSubtotal}`
-                                  : (cratePriceSubtotal ?? 0).toFixed(2)}
-                                €
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="row mb-3 text-center">
+              {/* Display the calculated delivery gross price */}
+              <div className="col">
+                <hr className="my-2 mb-3" />
+                <h2 className="fw-bold fs-5">Price (Gross):</h2>
+                <h2>{totalPriceGross.toFixed(2)}€</h2>
               </div>
+
+              {/* Display the calculated delivery net price */}
+              <div className="col">
+                <hr className="my-2 mb-3" />
+                <h2 className="fw-bold fs-5">Price (Net):</h2>
+                <h2>{totalPriceNet.toFixed(2)}€</h2>
+              </div>
+            </div>
+          </div>
+
+          {/* Display price and calculation details */}
+          <div className="col">
+            {/* Display the price table */}
+            <div>
+              {/* <div className="align-items-start fw-bold fs-4">PRICE</div> */}
+              <table className="table mb-4 text-left caption-top table-success table-striped table-hover table-bordered">
+                <caption>PRICE</caption>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>VAT</th>
+                    <th>Net</th>
+                    <th>Gross</th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  <tr>
+                    <th>Drink</th>
+                    <td>{(vat ?? 0) * 100}%</td>
+                    <td>{drinkPriceNet || 0}€</td>
+                    <td>
+                      {((drinkPriceNet ?? 0) * (1 + (vat || 0))).toFixed(2)}€
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Bottle</th>
+                    <td>0%</td>
+                    <td>{bottlePrice || 0}€</td>
+                    <td>{bottlePrice || 0}€</td>
+                  </tr>
+                  <tr>
+                    <th>Crate</th>
+                    <td>0%</td>
+                    <td>{cratePrice || 0}€</td>
+                    <td>{cratePrice || 0}€</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Display the drink table */}
+            <div>
+              {/* <div className="align-items-start fw-bold fs-4">DRINK</div> */}
+              <table className="table mb-4 text-left caption-top table-danger table-striped table-hover table-bordered">
+                <caption>DRINK</caption>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>Net</th>
+                    <th>Gross</th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  <tr>
+                    <th>Sold</th>
+                    <td>+{drinkSoldAmount}</td>
+                    <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td>+{drinkSoldAmount}</td>
+                    <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Display the bottle table */}
+            <div>
+              {/*  <div className="align-items-start fw-bold fs-4">BOTTLE</div> */}
+              <table className="table mb-4 text-left caption-top table-warning table-striped table-hover table-bordered">
+                <caption>BOTTLE</caption>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>Net</th>
+                    <th>Gross</th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  <tr>
+                    <th>Sold</th>
+                    <td>+{drinkSoldAmount}</td>
+                    <td>+{(bottlePriceSoldTotal ?? 0).toFixed(2)}€</td>
+                    <td>+{(bottlePriceSoldTotal ?? 0).toFixed(2)}€</td>
+                  </tr>
+                  <tr>
+                    <th>Received</th>
+                    <td>-{bottleReceivedAmount}</td>
+                    <td>-{(bottlePriceReceivedTotal ?? 0).toFixed(2)}€</td>
+                    <td>-{(bottlePriceReceivedTotal ?? 0).toFixed(2)}€</td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td>
+                      {(bottleAmountSubtotal ?? 0) > 0
+                        ? `+ ${bottleAmountSubtotal}`
+                        : bottleAmountSubtotal}
+                    </td>
+                    <td>
+                      {(bottlePriceSubtotal ?? 0) > 0
+                        ? `+ ${bottlePriceSubtotal}`
+                        : (bottlePriceSubtotal ?? 0).toFixed(2)}
+                      €
+                    </td>
+                    <td>
+                      {(bottlePriceSubtotal ?? 0) > 0
+                        ? `+ ${bottlePriceSubtotal}`
+                        : (bottlePriceSubtotal ?? 0).toFixed(2)}
+                      €
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Display the crate table */}
+            <div>
+              {/* <div className="align-items-start fw-bold fs-4">CRATE</div> */}
+              <table className="table mb-4 text-left caption-top table-primary table-striped table-hover table-bordered">
+                <caption>CRATE</caption>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>Net</th>
+                    <th>Gross</th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  <tr>
+                    <th>Sold: </th>
+                    <td>+{crateSoldAmount}</td>
+                    <td>+{(cratePriceSoldTotal ?? 0).toFixed(2)}€</td>
+                    <td>+{(cratePriceSoldTotal ?? 0).toFixed(2)}€</td>
+                  </tr>
+                  <tr>
+                    <th>Received: </th>
+                    <td>-{crateReceivedAmount}</td>
+                    <td>-{(cratePriceReceivedTotal ?? 0).toFixed(2)}€</td>
+                    <td>-{(cratePriceReceivedTotal ?? 0).toFixed(2)}€</td>
+                  </tr>
+                  <tr>
+                    <th>Total: </th>
+                    <td>
+                      {(crateAmountSubtotal ?? 0) > 0
+                        ? `+ ${crateAmountSubtotal}`
+                        : crateAmountSubtotal}
+                    </td>
+                    <td>
+                      {(cratePriceSubtotal ?? 0) > 0
+                        ? `+ ${cratePriceSubtotal}`
+                        : (cratePriceSubtotal ?? 0).toFixed(2)}
+                      €
+                    </td>
+                    <td>
+                      {(cratePriceSubtotal ?? 0) > 0
+                        ? `+ ${cratePriceSubtotal}`
+                        : (cratePriceSubtotal ?? 0).toFixed(2)}
+                      €
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
