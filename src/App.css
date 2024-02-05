@@ -1,17 +1,17 @@
 /* Import Bootstrap CSS */
 @import "../node_modules/bootstrap//dist/css/bootstrap.min.css";
 
-img {
+/* img {
   max-width: 40%;
   height: auto;
-}
+} */
 
-.container {
+/* .container {
   min-width: 200px;
-  /*  background-color: blueviolet; */
-}
+} */
 
-.main-container {
-  height: 100vh; /* Adjust the height as needed */
+/* .main-container {
+  height: 100vh; 
   overflow: auto;
 }
+ */
