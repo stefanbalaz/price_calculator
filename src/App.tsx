@@ -203,8 +203,8 @@ function App() {
             </div>
             <hr className="" />
           </div>
-          <div className="row column-gap-4">
-            <div className="col">
+          <div className="row gx-4">
+            <div className="col-md-6 col-12">
               {/* Error message */}
               {errorMessage && (
                 <div className="alert alert-danger" role="alert">
@@ -386,7 +386,7 @@ function App() {
             </div>
 
             {/* Display price and calculation details */}
-            <div className="col">
+            <div className="col-md-6 col-12">
               {/* Accordion with final price calculation */}
               <div className="accordion mb-3" id="accordionFinalCalculation">
                 <div className="accordion-item">
