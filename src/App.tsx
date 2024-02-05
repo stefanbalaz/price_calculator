@@ -191,14 +191,14 @@ function App() {
       <div className="d-flex align-items-center justify-content-center min-vh-100">
         <div className="container-xl card">
           <div className="row">
-            <div className="col-2">
+            <div className="col-sm-2 col-3">
               <img
                 src="../amate_logo.png"
                 className="img-fluid pb-3 pt-3"
                 alt="Amate_Logo"
               />
             </div>
-            <div className="col-10 align-self-center">
+            <div className="col-sm-10 col-9 align-self-center">
               <h1 className="">DELIVERY PRICE CALCULATOR</h1>
             </div>
             <hr className="" />
