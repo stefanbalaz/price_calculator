@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap";
+/* import Email from "./Components/Email"; */
+import Form from "./Components/Form";
+import emailjs from "@emailjs/browser";
 
 function App() {
   const [drinkPriceNet, setDrinkPriceNet] = useState<number | null>(0.75);
@@ -49,6 +52,11 @@ function App() {
   const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
   const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [calculatedPrice, setCalculatedPrice] = useState<any>(null);
 
   function calculatePrice(): {
     totalPriceNet: number;
@@ -148,6 +156,17 @@ function App() {
     };
   }
 
+  // Use useEffect to perform calculations after the component has rendered
+  /*   useEffect(() => {
+    const updatedCalculatedPrice = calculatePrice();
+    setCalculatedPrice(updatedCalculatedPrice);
+  }, [
+    drinkSoldAmount,
+    crateSoldAmount,
+    bottleReceivedAmount,
+    crateReceivedAmount,
+  ]); */
+
   function handleButtonClick(): void {
     if (
       !drinkPriceNet ||
@@ -169,7 +188,9 @@ function App() {
       return;
     }
 
-    const calculatedPrice = calculatePrice();
+    //const calculatedPrice = calculatePrice();
+    const updatedCalculatedPrice = calculatePrice();
+    setCalculatedPrice(updatedCalculatedPrice);
 
     setErrorMessage(null);
     setTotalPriceGross(calculatedPrice.totalPriceGross);
@@ -185,6 +206,70 @@ function App() {
     setBottleAmountSubtotal(calculatedPrice.bottleAmountSubtotal);
     setCrateAmountSubtotal(calculatedPrice.crateAmountSubtotal);
   }
+
+  const handleInputChange = (field, value) => {
+    switch (field) {
+      case "drinkSoldAmount":
+        setDrinkSoldAmount(value);
+        break;
+      case "crateSoldAmount":
+        setCrateSoldAmount(value);
+        break;
+      case "bottleReceivedAmount":
+        setBottleReceivedAmount(value);
+        break;
+      case "crateReceivedAmount":
+        setCrateReceivedAmount(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    const templateParams = {
+      drinkPriceTotalNet: calculatedPrice?.drinkPriceTotalNet,
+      drinkPriceTotalGross: calculatedPrice?.drinkPriceTotalGross,
+      bottlePriceSoldTotal: calculatedPrice?.bottlePriceSoldTotal,
+      bottlePriceReceivedTotal: calculatedPrice?.bottlePriceReceivedTotal,
+      cratePriceSoldTotal: calculatedPrice?.cratePriceSoldTotal,
+      cratePriceReceivedTotal: calculatedPrice?.cratePriceReceivedTotal,
+      bottlePriceSubtotal: calculatedPrice?.bottlePriceSubtotal,
+      cratePriceSubtotal: calculatedPrice?.cratePriceSubtotal,
+      bottleAmountSubtotal: calculatedPrice?.bottleAmountSubtotal,
+      crateAmountSubtotal: calculatedPrice?.crateAmountSubtotal,
+      totalPriceNet: calculatedPrice?.totalPriceNet,
+      totalPriceGross: calculatedPrice?.totalPriceGross,
+    };
+
+    console.log("YYYYYYtemplateParams inside handle submit", templateParams);
+    console.log(
+      "XXXXXXXcalculatedPrice inside handle submit",
+      calculatedPrice?.totalPriceGross
+    );
+
+    emailjs
+      .send(
+        "service_vxcsu4d",
+        "template_b06txlt",
+        templateParams,
+        "P_0aHI8FhelwPjRN0"
+      )
+      .then((response) => {
+        console.log("Email sent:", response);
+        setIsSubmitted(true);
+      })
+      .catch((error) => {
+        console.error("Email failed to send:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <>
@@ -212,152 +297,16 @@ function App() {
                 </div>
               )}
 
-              <form className="">
-                {/* Input for Drink Price */}
-                <div className="input-group mb-3" data-test-id="drinkPriceNet">
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="0.01"
-                      className="form-control"
-                      id="drinkPriceNet"
-                      placeholder="Drink Price (Net)"
-                      value={drinkPriceNet !== null ? drinkPriceNet : ""}
-                      onChange={(e) =>
-                        setDrinkPriceNet(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Drink Price (Net)
-                    </label>
-                  </div>
-                  <span className="input-group-text">€</span>
-                </div>
-
-                {/* Input for Number of Drinks Sold */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="drinkSoldAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="drinkSoldAmount"
-                      placeholder="Drink Sold Amount"
-                      value={drinkSoldAmount !== null ? drinkSoldAmount : ""}
-                      onChange={(e) =>
-                        setDrinkSoldAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Drink Sold Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Crates Sold */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="crateSoldAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="crateSoldAmount"
-                      placeholder="Crate Sold Amount"
-                      value={crateSoldAmount !== null ? crateSoldAmount : ""}
-                      onChange={(e) =>
-                        setCrateSoldAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Crate Sold Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Bottles Received */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="bottleReceivedAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="bottleReceivedAmount"
-                      placeholder="Bottle Received Amount"
-                      value={
-                        bottleReceivedAmount !== null
-                          ? bottleReceivedAmount
-                          : ""
-                      }
-                      onChange={(e) =>
-                        setBottleReceivedAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Bottle Received Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Crates Received */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="crateReceivedAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="crateReceivedAmount"
-                      placeholder="Crate Received Amount"
-                      value={
-                        crateReceivedAmount !== null ? crateReceivedAmount : ""
-                      }
-                      onChange={(e) =>
-                        setCrateReceivedAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Crate Received Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Button to calculate delivery price */}
-                <div className="d-grid mb-3">
-                  <button
-                    type="button"
-                    className="btn btn-primary col-6 mx-auto"
-                    onClick={handleButtonClick}
-                    data-test-id="calculateButton"
-                  >
-                    Calculate
-                  </button>
-                </div>
-              </form>
+              {/* Form */}
+              <Form
+                drinkPriceNet={drinkPriceNet}
+                drinkSoldAmount={drinkSoldAmount}
+                crateSoldAmount={crateSoldAmount}
+                bottleReceivedAmount={bottleReceivedAmount}
+                crateReceivedAmount={crateReceivedAmount}
+                handleButtonClick={handleButtonClick}
+                handleInputChange={handleInputChange}
+              />
 
               <div className="row mb-3 text-center">
                 {/* Display the calculated delivery gross price */}
@@ -408,7 +357,7 @@ function App() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body table-responsive">
-                      <table className="table mb-4 text-left table-success table-striped table-hover table-bordered">
+                      <table className="table mb-4 text-left table-light table-striped table-hover table-bordered">
                         <thead>
                           <tr>
                             <th></th>
@@ -507,7 +456,7 @@ function App() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body table-responsive">
-                      <table className="table mb-4 text-left table-secondary table-striped table-hover table-bordered">
+                      <table className="table mb-4 text-left table-success table-striped table-hover table-bordered">
                         <thead>
                           <tr>
                             <th></th>
@@ -701,6 +650,34 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Inputfield Send E-Mail */}
+              <div className="mb-3">
+                {!isSubmitted ? (
+                  <div className="input-group input-group-lg mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Send via E-Mail"
+                      aria-label="Send via E-Mail"
+                      aria-describedby="button-addon2"
+                    ></input>
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      disabled={isLoading}
+                      onClick={handleSubmit}
+                    >
+                      {isLoading ? "Sending..." : "Send"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="alert alert-success" role="alert">
+                    E-Mail was successfully sent.
+                  </div>
+                )}
+              </div>
+              {/*  <Email /> */}
             </div>
           </div>
         </div>
