@@ -2,9 +2,46 @@
 @import "../node_modules/bootstrap//dist/css/bootstrap.min.css";
 
 .card {
-  background-color: #faf9f5;
+  background-color: #f1eee6;
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Inter", sans-serif;
+}
+
+h1 {
+  color: rgb(71, 71, 71);
+}
+
+.btn {
+  background-color: #b7aa79;
+  border-color: #726947;
+}
+
+.btn:hover {
+  background-color: #726947;
+  border-color: #b7aa79;
+}
+
+.accordion-button {
+  background-color: #d8cfb2;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #d8cfb2;
+}
+
+.accordion-collapse {
+  background-color: #f4f2ed;
+}
+
+.accordion-button:focus {
+  border-color: #8d6254; /* Your custom border color when focused */
+  box-shadow: 0 0 0 0.25rem rgba(104, 79, 71, 0.25); /* Your custom box shadow when focused */
+}
+
+.form-control:focus {
+  border-color: #8d6254; /* Your custom border color when focused */
+  box-shadow: 0 0 0 0.25rem rgba(104, 79, 71, 0.25); /* Your custom box shadow when focused */
 }

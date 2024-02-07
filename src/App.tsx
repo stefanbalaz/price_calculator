@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap";
+/* import Email from "./Components/Email"; */
+import Form from "./Components/Form";
+import emailjs from "@emailjs/browser";
 
-function App() {
+function App(): JSX.Element {
   const [drinkPriceNet, setDrinkPriceNet] = useState<number | null>(0.75);
+  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(0);
+  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(0);
+
+  const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
+    number | null
+  >(0);
+  const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
+    0
+  );
+
+  const [drinkPriceGross, setDrinkPriceGross] = useState<number | null>(null);
   const [bottlePrice] = useState<number | null>(0.13);
   const [cratePrice] = useState<number | null>(1.66);
   const [vat] = useState<number | null>(0.2);
@@ -38,19 +52,15 @@ function App() {
   const [cratePriceReceivedTotal, setCratePriceReceivedTotal] = useState<
     number | null
   >(null);
-  const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(0);
-  const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(0);
-  const [bottleReceivedAmount, setBottleReceivedAmount] = useState<
-    number | null
-  >(0);
-  const [crateReceivedAmount, setCrateReceivedAmount] = useState<number | null>(
-    0
-  );
   const [totalPriceNet, setTotalPriceNet] = useState<number>(0);
   const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [calculatedPrice, setCalculatedPrice] = useState<any>(null);
 
   function calculatePrice(): {
+    drinkPriceGross: number;
     totalPriceNet: number;
     totalPriceGross: number;
     drinkPriceTotalNet: number;
@@ -67,6 +77,10 @@ function App() {
     /*   Vat multiplier */
     const vatMultiplier = vat !== null ? 1 + vat : 1;
     console.log("vatMultiplier", vatMultiplier);
+
+    /*   Drink Price Gross */
+    const drinkPriceGross = (drinkPriceNet || 0) * vatMultiplier;
+    console.log("drinkPriceGross", drinkPriceGross);
 
     /* Drink Price Total Net */
     const drinkPriceTotalNet = (drinkSoldAmount || 0) * (drinkPriceNet || 0);
@@ -120,7 +134,7 @@ function App() {
       bottlePriceReceivedTotal +
       cratePriceSoldTotal -
       cratePriceReceivedTotal;
-    console.log("totalPriceNet", totalPriceNet);
+    console.log("totalPriceNet", totalPriceNet.toFixed(2));
 
     /* Total Price Gross */
     const totalPriceGross =
@@ -129,9 +143,10 @@ function App() {
       bottlePriceReceivedTotal +
       cratePriceSoldTotal -
       cratePriceReceivedTotal;
-    console.log("totalPriceGross", totalPriceGross);
+    console.log("totalPriceGross", totalPriceGross.toFixed(2));
 
     return {
+      drinkPriceGross,
       totalPriceNet,
       totalPriceGross,
       // vatMultiplier,
@@ -147,6 +162,17 @@ function App() {
       crateAmountSubtotal,
     };
   }
+
+  // Use useEffect to perform calculations after the component has rendered
+  useEffect(() => {
+    const updatedCalculatedPrice = calculatePrice();
+    setCalculatedPrice(updatedCalculatedPrice);
+  }, [
+    drinkSoldAmount,
+    crateSoldAmount,
+    bottleReceivedAmount,
+    crateReceivedAmount,
+  ]);
 
   function handleButtonClick(): void {
     if (
@@ -169,13 +195,20 @@ function App() {
       return;
     }
 
-    const calculatedPrice = calculatePrice();
+    //const calculatedPrice = calculatePrice();
+    const updatedCalculatedPrice = calculatePrice();
+    setCalculatedPrice(updatedCalculatedPrice);
 
     setErrorMessage(null);
+
+    setDrinkPriceGross(calculatedPrice.drinkPriceGross);
     setTotalPriceGross(calculatedPrice.totalPriceGross);
     setTotalPriceNet(calculatedPrice.totalPriceNet);
     setDrinkPriceTotalNet(calculatedPrice.drinkPriceTotalNet);
     setDrinkPriceTotalGross(calculatedPrice.drinkPriceTotalGross);
+    setBottleReceivedAmount(bottleReceivedAmount);
+    setCrateReceivedAmount(crateReceivedAmount);
+    setCrateSoldAmount(crateSoldAmount);
     setBottlePriceSoldTotal(calculatedPrice.bottlePriceSoldTotal);
     setBottlePriceReceivedTotal(calculatedPrice.bottlePriceReceivedTotal);
     setCratePriceSoldTotal(calculatedPrice.cratePriceSoldTotal);
@@ -185,6 +218,83 @@ function App() {
     setBottleAmountSubtotal(calculatedPrice.bottleAmountSubtotal);
     setCrateAmountSubtotal(calculatedPrice.crateAmountSubtotal);
   }
+
+  const handleInputChange = (field: string, value: number | null) => {
+    switch (field) {
+      case "drinkPriceNet":
+        setDrinkPriceNet(value === "" ? null : value);
+        break;
+      case "drinkSoldAmount":
+        setDrinkSoldAmount(value === "" ? null : value);
+        break;
+      case "crateSoldAmount":
+        setCrateSoldAmount(value === "" ? null : value);
+        break;
+      case "bottleReceivedAmount":
+        setBottleReceivedAmount(value === "" ? null : value);
+        break;
+      case "crateReceivedAmount":
+        setCrateReceivedAmount(value === "" ? null : value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    const templateParams = {
+      drinkPriceNet: drinkPriceNet,
+      drinkPriceGross: (drinkPriceGross ?? 0).toFixed(2),
+      cratePrice: cratePrice,
+      bottlePrice: bottlePrice,
+      drinkSoldAmount: drinkSoldAmount,
+      drinkPriceTotalNet: calculatedPrice?.drinkPriceTotalNet.toFixed(2),
+      drinkPriceTotalGross: calculatedPrice?.drinkPriceTotalGross.toFixed(2),
+      bottlePriceSoldTotal: calculatedPrice?.bottlePriceSoldTotal.toFixed(2),
+      bottlePriceReceivedTotal:
+        calculatedPrice?.bottlePriceReceivedTotal.toFixed(2),
+      cratePriceSoldTotal: calculatedPrice?.cratePriceSoldTotal.toFixed(2),
+      cratePriceReceivedTotal:
+        calculatedPrice?.cratePriceReceivedTotal.toFixed(2),
+      bottlePriceSubtotal: calculatedPrice?.bottlePriceSubtotal.toFixed(2),
+      cratePriceSubtotal: calculatedPrice?.cratePriceSubtotal.toFixed(2),
+      bottleAmountSubtotal: calculatedPrice?.bottleAmountSubtotal,
+      crateAmountSubtotal: calculatedPrice?.crateAmountSubtotal,
+      totalPriceNet: calculatedPrice?.totalPriceNet.toFixed(2),
+      totalPriceGross: calculatedPrice?.totalPriceGross.toFixed(2),
+      bottleReceivedAmount: bottleReceivedAmount,
+      crateReceivedAmount: crateReceivedAmount,
+      crateSoldAmount: crateSoldAmount,
+    };
+
+    console.log("YYYYYYtemplateParams inside handle submit", templateParams);
+    console.log(
+      "XXXXXXXcalculatedPrice inside handle submit",
+      calculatedPrice?.totalPriceGross
+    );
+
+    emailjs
+      .send(
+        "service_vxcsu4d",
+        "template_b06txlt",
+        templateParams,
+        "P_0aHI8FhelwPjRN0"
+      )
+      .then((response) => {
+        console.log("Email sent:", response);
+        setIsSubmitted(true);
+      })
+      .catch((error) => {
+        console.error("Email failed to send:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <>
@@ -212,152 +322,16 @@ function App() {
                 </div>
               )}
 
-              <form className="">
-                {/* Input for Drink Price */}
-                <div className="input-group mb-3" data-test-id="drinkPriceNet">
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="0.01"
-                      className="form-control"
-                      id="drinkPriceNet"
-                      placeholder="Drink Price (Net)"
-                      value={drinkPriceNet !== null ? drinkPriceNet : ""}
-                      onChange={(e) =>
-                        setDrinkPriceNet(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Drink Price (Net)
-                    </label>
-                  </div>
-                  <span className="input-group-text">€</span>
-                </div>
-
-                {/* Input for Number of Drinks Sold */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="drinkSoldAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="drinkSoldAmount"
-                      placeholder="Drink Sold Amount"
-                      value={drinkSoldAmount !== null ? drinkSoldAmount : ""}
-                      onChange={(e) =>
-                        setDrinkSoldAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Drink Sold Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Crates Sold */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="crateSoldAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="crateSoldAmount"
-                      placeholder="Crate Sold Amount"
-                      value={crateSoldAmount !== null ? crateSoldAmount : ""}
-                      onChange={(e) =>
-                        setCrateSoldAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Crate Sold Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Bottles Received */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="bottleReceivedAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="bottleReceivedAmount"
-                      placeholder="Bottle Received Amount"
-                      value={
-                        bottleReceivedAmount !== null
-                          ? bottleReceivedAmount
-                          : ""
-                      }
-                      onChange={(e) =>
-                        setBottleReceivedAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Bottle Received Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Input for Number of Crates Received */}
-                <div
-                  className="input-group mb-3"
-                  data-test-id="crateReceivedAmount"
-                >
-                  <div className="form-floating flex-grow-1">
-                    <input
-                      type="number"
-                      step="1"
-                      className="form-control"
-                      id="crateReceivedAmount"
-                      placeholder="Crate Received Amount"
-                      value={
-                        crateReceivedAmount !== null ? crateReceivedAmount : ""
-                      }
-                      onChange={(e) =>
-                        setCrateReceivedAmount(
-                          e.target.value === "" ? null : Number(e.target.value)
-                        )
-                      }
-                    />
-                    <label htmlFor="floatingInputGroup1">
-                      Crate Received Amount
-                    </label>
-                  </div>
-                  <span className="input-group-text">Pcs</span>
-                </div>
-
-                {/* Button to calculate delivery price */}
-                <div className="d-grid mb-3">
-                  <button
-                    type="button"
-                    className="btn btn-primary col-6 mx-auto"
-                    onClick={handleButtonClick}
-                    data-test-id="calculateButton"
-                  >
-                    Calculate
-                  </button>
-                </div>
-              </form>
+              {/* Form */}
+              <Form
+                drinkPriceNet={drinkPriceNet}
+                drinkSoldAmount={drinkSoldAmount}
+                crateSoldAmount={crateSoldAmount}
+                bottleReceivedAmount={bottleReceivedAmount}
+                crateReceivedAmount={crateReceivedAmount}
+                handleButtonClick={handleButtonClick}
+                handleInputChange={handleInputChange}
+              />
 
               <div className="row mb-3 text-center">
                 {/* Display the calculated delivery gross price */}
@@ -408,7 +382,7 @@ function App() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body table-responsive">
-                      <table className="table mb-4 text-left table-success table-striped table-hover table-bordered">
+                      <table className="table mb-4 text-left table-light table-striped table-hover table-bordered">
                         <thead>
                           <tr>
                             <th></th>
@@ -433,13 +407,13 @@ function App() {
                             </td>
                             <td>
                               {(bottlePriceSubtotal ?? 0) > 0
-                                ? `+${bottlePriceSubtotal}`
+                                ? `+${(bottlePriceSubtotal ?? 0).toFixed(2)}`
                                 : (bottlePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
                             <td>
                               {(bottlePriceSubtotal ?? 0) > 0
-                                ? `+${bottlePriceSubtotal}`
+                                ? `+${(bottlePriceSubtotal ?? 0).toFixed(2)}`
                                 : (bottlePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
@@ -453,13 +427,13 @@ function App() {
                             </td>
                             <td>
                               {(cratePriceSubtotal ?? 0) > 0
-                                ? `+${cratePriceSubtotal}`
+                                ? `+${(cratePriceSubtotal ?? 0).toFixed(2)}`
                                 : (cratePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
                             <td>
                               {(cratePriceSubtotal ?? 0) > 0
-                                ? `+${cratePriceSubtotal}`
+                                ? `+${(cratePriceSubtotal ?? 0).toFixed(2)}`
                                 : (cratePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
@@ -507,7 +481,7 @@ function App() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body table-responsive">
-                      <table className="table mb-4 text-left table-secondary table-striped table-hover table-bordered">
+                      <table className="table mb-4 text-left table-success table-striped table-hover table-bordered">
                         <thead>
                           <tr>
                             <th></th>
@@ -633,13 +607,13 @@ function App() {
                             </td>
                             <td>
                               {(bottlePriceSubtotal ?? 0) > 0
-                                ? `+${bottlePriceSubtotal}`
+                                ? `+${(bottlePriceSubtotal ?? 0).toFixed(2)}`
                                 : (bottlePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
                             <td>
                               {(bottlePriceSubtotal ?? 0) > 0
-                                ? `+${bottlePriceSubtotal}`
+                                ? `+${(bottlePriceSubtotal ?? 0).toFixed(2)}`
                                 : (bottlePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
@@ -684,13 +658,13 @@ function App() {
                             </td>
                             <td>
                               {(cratePriceSubtotal ?? 0) > 0
-                                ? `+${cratePriceSubtotal}`
+                                ? `+${(cratePriceSubtotal ?? 0).toFixed(2)}`
                                 : (cratePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
                             <td>
                               {(cratePriceSubtotal ?? 0) > 0
-                                ? `+${cratePriceSubtotal}`
+                                ? `+${(cratePriceSubtotal ?? 0).toFixed(2)}`
                                 : (cratePriceSubtotal ?? 0).toFixed(2)}
                               €
                             </td>
@@ -701,6 +675,34 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Inputfield Send E-Mail */}
+              <div className="mb-3">
+                {!isSubmitted ? (
+                  <div className="input-group input-group-lg mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Send via E-Mail"
+                      aria-label="Send via E-Mail"
+                      aria-describedby="button-addon2"
+                    ></input>
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      disabled={isLoading}
+                      onClick={handleSubmit}
+                    >
+                      {isLoading ? "Sending..." : "Send"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="alert alert-success" role="alert">
+                    E-Mail was successfully sent.
+                  </div>
+                )}
+              </div>
+              {/*  <Email /> */}
             </div>
           </div>
         </div>
