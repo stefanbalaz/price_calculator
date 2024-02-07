@@ -231,7 +231,7 @@ function App(): JSX.Element {
 
     emailjs
       .send(
-        "service_vxcsu4d",
+        "service_vjiu5m5",
         "template_b06txlt",
         templateParams,
         "P_0aHI8FhelwPjRN0"
