@@ -219,7 +219,7 @@ function App(): JSX.Element {
     setCrateAmountSubtotal(calculatedPrice.crateAmountSubtotal);
   }
 
-  const handleInputChange = (field: string, value: number | null) => {
+  /*   const handleInputChange = (field: string, value: number | null) => {
     switch (field) {
       case "drinkPriceNet":
         setDrinkPriceNet(value === "" ? null : value);
@@ -235,6 +235,58 @@ function App(): JSX.Element {
         break;
       case "crateReceivedAmount":
         setCrateReceivedAmount(value === "" ? null : value);
+        break;
+      default:
+        break;
+    }
+  };  */
+
+  const handleInputChange = (field: string, value: number | null | string) => {
+    switch (field) {
+      case "drinkPriceNet":
+        setDrinkPriceNet(
+          value === null || value === ""
+            ? null
+            : typeof value === "string"
+            ? parseFloat(value)
+            : value
+        );
+        break;
+      case "drinkSoldAmount":
+        setDrinkSoldAmount(
+          value === null || value === ""
+            ? null
+            : typeof value === "string"
+            ? parseFloat(value)
+            : value
+        );
+        break;
+      case "crateSoldAmount":
+        setCrateSoldAmount(
+          value === null || value === ""
+            ? null
+            : typeof value === "string"
+            ? parseFloat(value)
+            : value
+        );
+        break;
+      case "bottleReceivedAmount":
+        setBottleReceivedAmount(
+          value === null || value === ""
+            ? null
+            : typeof value === "string"
+            ? parseFloat(value)
+            : value
+        );
+        break;
+      case "crateReceivedAmount":
+        setCrateReceivedAmount(
+          value === null || value === ""
+            ? null
+            : typeof value === "string"
+            ? parseFloat(value)
+            : value
+        );
         break;
       default:
         break;
