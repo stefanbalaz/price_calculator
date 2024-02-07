@@ -1,4 +1,4 @@
-import { useState } from "react";
+/* import { useState } from "react";
 import emailjs from "emailjs-com";
 
 function Email() {
@@ -59,3 +59,4 @@ function Email() {
 }
 
 export default Email;
+ */

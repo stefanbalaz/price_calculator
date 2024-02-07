@@ -1,14 +1,23 @@
-import React from "react";
+interface FormProps {
+  drinkPriceNet: number | null;
+  drinkSoldAmount: number | null;
+  crateSoldAmount: number | null;
+  bottleReceivedAmount: number | null;
+  crateReceivedAmount: number | null;
+  handleButtonClick: () => void;
+  handleInputChange: (field: string, value: number | null) => void;
+}
 
-const Form = ({
-  drinkPriceNet,
-  drinkSoldAmount,
-  crateSoldAmount,
-  bottleReceivedAmount,
-  crateReceivedAmount,
-  handleButtonClick,
-  handleInputChange,
-}) => {
+const Form: React.FC<FormProps> = (props) => {
+  const {
+    drinkPriceNet,
+    drinkSoldAmount,
+    crateSoldAmount,
+    bottleReceivedAmount,
+    crateReceivedAmount,
+    handleButtonClick,
+    handleInputChange,
+  } = props;
   return (
     <>
       {" "}
@@ -23,9 +32,10 @@ const Form = ({
               id="drinkPriceNet"
               placeholder="Drink Price (Net)"
               value={drinkPriceNet !== null ? drinkPriceNet : ""}
+              /* value={drinkPriceNet ?? ""} */
               onChange={(e) =>
                 handleInputChange(
-                  "drinkSoldAmount",
+                  "drinkPriceNet",
                   e.target.value === "" ? null : Number(e.target.value)
                 )
               }
@@ -69,6 +79,7 @@ const Form = ({
               value={crateSoldAmount !== null ? crateSoldAmount : ""}
               onChange={(e) =>
                 handleInputChange(
+                  "crateSoldAmount",
                   e.target.value === "" ? null : Number(e.target.value)
                 )
               }
@@ -90,7 +101,7 @@ const Form = ({
               value={bottleReceivedAmount !== null ? bottleReceivedAmount : ""}
               onChange={(e) =>
                 handleInputChange(
-                  "drinkSoldAmount",
+                  "bottleReceivedAmount",
                   e.target.value === "" ? null : Number(e.target.value)
                 )
               }
@@ -112,7 +123,7 @@ const Form = ({
               value={crateReceivedAmount !== null ? crateReceivedAmount : ""}
               onChange={(e) =>
                 handleInputChange(
-                  "drinkSoldAmount",
+                  "crateReceivedAmount",
                   e.target.value === "" ? null : Number(e.target.value)
                 )
               }
