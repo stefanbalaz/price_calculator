@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap";
-import Email from "./components/Email";
-import Form from "./components/Form";
-import Header from "./components/Header";
-import Price from "./components/Price";
+import Email from "./Components/Email";
+import Form from "./Components/Form";
+import Header from "./Components/Header";
+import Price from "./Components/Price";
 import emailjs from "@emailjs/browser";
-import ErrorMessage from "./components/ErrorMessage";
-import Accordion from "./components/Accordion";
+import ErrorMessage from "./Components/ErrorMessage";
+import Accordion from "./Components/Accordion";
 import { calculatePrice } from "./services/calculatePrice";
 
 function App(): JSX.Element {
@@ -61,8 +61,8 @@ function App(): JSX.Element {
   const [totalPriceGross, setTotalPriceGross] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [calculatedPrice, setCalculatedPrice] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const updatedCalculatedPrice = calculatePrice(
