@@ -1,0 +1,476 @@
+<p>
+  <span style="font-size: 14pt"><strong>PRICE DETAILS</strong></span>
+</p>
+<table
+  style="
+    border-collapse: collapse;
+    width: 60%;
+    background-color: rgb(209, 231, 221);
+    margin-left: 0px;
+    border: 1px solid rgb(22, 145, 121);
+    margin-right: auto;
+  "
+  border="1"
+>
+  <colgroup>
+    <col style="width: 24.9792%" />
+    <col style="width: 28.2184%" />
+    <col style="width: 26.848%" />
+    <col style="width: 19.9336%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <th style="width: 17.5375%; border-color: rgb(22, 145, 121)">&nbsp;</th>
+      <td style="width: 28.2462%; border-color: rgb(22, 145, 121)">
+        <strong>VAT</strong>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(22, 145, 121)">
+        <strong>Net</strong>
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(22, 145, 121)">
+        <strong>Gross</strong>
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(22, 145, 121);
+          text-align: left;
+        "
+      >
+        Drink Price
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(22, 145, 121)">20%</td>
+      <td style="width: 26.8495%; border-color: rgb(22, 145, 121)">
+        {{drinkPriceNet}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(22, 145, 121)">
+        {{drinkPriceNet}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(22, 145, 121);
+          text-align: left;
+        "
+      >
+        Bottle Price
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(22, 145, 121)">0%</td>
+      <td style="width: 26.8495%; border-color: rgb(22, 145, 121)">
+        {{bottlePrice}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(22, 145, 121)">
+        {{bottlePrice}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(22, 145, 121);
+          text-align: left;
+        "
+      >
+        Crate Price
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(22, 145, 121)">0%</td>
+      <td style="width: 26.8495%; border-color: rgb(22, 145, 121)">
+        {{cratePrice}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(22, 145, 121)">
+        {{cratePrice}}&euro;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>
+  <span style="font-size: 14pt"><strong>DRINK CALCULATION</strong></span>
+</p>
+<table
+  style="
+    border-collapse: collapse;
+    width: 60%;
+    background-color: rgb(248, 215, 218);
+    margin-left: 0px;
+    border: 1px solid rgb(185, 106, 217);
+    margin-right: auto;
+  "
+  border="1"
+>
+  <colgroup>
+    <col style="width: 24.9792%" />
+    <col style="width: 28.2184%" />
+    <col style="width: 26.848%" />
+    <col style="width: 19.9336%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <th style="width: 17.5375%; border-color: rgb(185, 106, 217)">&nbsp;</th>
+      <td style="width: 28.2462%; border-color: rgb(185, 106, 217)">
+        <strong>Amount</strong>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(185, 106, 217)">
+        <strong>Net</strong>
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(185, 106, 217)">
+        <strong>Gross</strong>
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(185, 106, 217);
+          text-align: left;
+        "
+      >
+        Sold
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(185, 106, 217)">
+        {{drinkSoldAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(185, 106, 217)">
+        {{drinkPriceTotalNet}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(185, 106, 217)">
+        {{drinkPriceTotalGross}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(185, 106, 217);
+          text-align: left;
+        "
+      >
+        Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(185, 106, 217)">
+        {{drinkSoldAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(185, 106, 217)">
+        {{drinkPriceTotalNet}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(185, 106, 217)">
+        {{drinkPriceTotalGross}}&euro;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>
+  <span style="font-size: 14pt"><strong>BOTTLE CALCULATION</strong></span>
+</p>
+<table
+  style="
+    border-collapse: collapse;
+    width: 60%;
+    background-color: rgb(255, 243, 205);
+    margin-left: 0px;
+    border: 1px solid rgb(241, 196, 15);
+    margin-right: auto;
+  "
+  border="1"
+>
+  <colgroup>
+    <col style="width: 24.9792%" />
+    <col style="width: 28.2184%" />
+    <col style="width: 26.848%" />
+    <col style="width: 19.9336%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <th style="width: 17.5375%; border-color: rgb(241, 196, 15)">&nbsp;</th>
+      <td style="width: 28.2462%; border-color: rgb(241, 196, 15)">
+        <strong>Amount</strong>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(241, 196, 15)">
+        <strong>Net</strong>
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(241, 196, 15)">
+        <strong>Gross</strong>
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(241, 196, 15);
+          text-align: left;
+        "
+      >
+        Sold
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(241, 196, 15)">
+        {{drinkSoldAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceSoldTotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceSoldTotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(241, 196, 15);
+          text-align: left;
+        "
+      >
+        Received
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(241, 196, 15)">
+        {{bottleReceivedAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceReceivedTotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceReceivedTotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(241, 196, 15);
+          text-align: left;
+        "
+      >
+        Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(241, 196, 15)">
+        <div>
+          <div>{{bottleAmountSubtotal}}</div>
+        </div>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceSubtotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(241, 196, 15)">
+        {{bottlePriceSubtotal}}&euro;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>
+  <span style="font-size: 14pt"><strong>CRATE CALCULATION</strong></span>
+</p>
+<table
+  style="
+    border-collapse: collapse;
+    width: 60%;
+    background-color: rgb(207, 226, 255);
+    margin-left: 0px;
+    border: 1px solid rgb(53, 152, 219);
+    margin-right: auto;
+  "
+  border="1"
+>
+  <colgroup>
+    <col style="width: 24.9792%" />
+    <col style="width: 28.2184%" />
+    <col style="width: 26.848%" />
+    <col style="width: 19.9336%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <th style="width: 17.5375%; border-color: rgb(53, 152, 219)">&nbsp;</th>
+      <td style="width: 28.2462%; border-color: rgb(53, 152, 219)">
+        <strong>Amount</strong>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(53, 152, 219)">
+        <strong>Net</strong>
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(53, 152, 219)">
+        <strong>Gross</strong>
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(53, 152, 219);
+          text-align: left;
+        "
+      >
+        Sold
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(53, 152, 219)">
+        {{crateSoldAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(53, 152, 219)">
+        {{cratePriceSoldTotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(53, 152, 219)">
+        {{cratePriceSoldTotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(53, 152, 219);
+          text-align: left;
+        "
+      >
+        Received
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(53, 152, 219)">
+        {{crateReceivedAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(53, 152, 219)">
+        {{cratePriceReceivedTotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(53, 152, 219)">
+        {{cratePriceReceivedTotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(53, 152, 219);
+          text-align: left;
+        "
+      >
+        Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(53, 152, 219)">
+        <div>
+          <div>{{crateAmountSubtotal}}</div>
+        </div>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(53, 152, 219)">
+        {{cratePriceSubtotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(53, 152, 219)">
+        {{cratePriceSubtotal}}&euro;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>&nbsp;</p>
+<p>
+  <span style="font-size: 14pt"><strong>FINAL CALCULATION</strong></span>
+</p>
+<table
+  style="
+    border-collapse: collapse;
+    width: 60%;
+    background-color: rgb(236, 240, 241);
+    margin-left: 0px;
+    border: 1px solid rgb(149, 165, 166);
+    margin-right: auto;
+  "
+  border="1"
+>
+  <colgroup>
+    <col style="width: 24.9792%" />
+    <col style="width: 28.2184%" />
+    <col style="width: 26.848%" />
+    <col style="width: 19.9336%" />
+  </colgroup>
+  <tbody>
+    <tr>
+      <th style="width: 17.5375%; border-color: rgb(149, 165, 166)">&nbsp;</th>
+      <td style="width: 28.2462%; border-color: rgb(149, 165, 166)">
+        <strong>Amount</strong>
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(149, 165, 166)">
+        <strong>Net</strong>
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(149, 165, 166)">
+        <strong>Gross</strong>
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(149, 165, 166);
+          text-align: left;
+        "
+      >
+        Drink Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(149, 165, 166)">
+        {{drinkSoldAmount}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(149, 165, 166)">
+        {{drinkPriceTotalNet}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(149, 165, 166)">
+        {{drinkPriceTotalGross}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(149, 165, 166);
+          text-align: left;
+        "
+      >
+        Bottle Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(149, 165, 166)">
+        {{bottleAmountSubtotal}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(149, 165, 166)">
+        {{bottlePriceSubtotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(149, 165, 166)">
+        {{bottlePriceSubtotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(149, 165, 166);
+          text-align: left;
+        "
+      >
+        Crate Subtotal
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(149, 165, 166)">
+        {{crateAmountSubtotal}}
+      </td>
+      <td style="width: 26.8495%; border-color: rgb(149, 165, 166)">
+        {{cratePriceSubtotal}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(149, 165, 166)">
+        {{cratePriceSubtotal}}&euro;
+      </td>
+    </tr>
+    <tr>
+      <th
+        style="
+          width: 17.5375%;
+          border-color: rgb(149, 165, 166);
+          text-align: left;
+        "
+      >
+        Total
+      </th>
+      <td style="width: 28.2462%; border-color: rgb(149, 165, 166)">&nbsp;</td>
+      <td style="width: 26.8495%; border-color: rgb(149, 165, 166)">
+        {{totalPriceNet}}&euro;
+      </td>
+      <td style="width: 27.3151%; border-color: rgb(149, 165, 166)">
+        {{totalPriceGross}}&euro;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><br /><br /></p>

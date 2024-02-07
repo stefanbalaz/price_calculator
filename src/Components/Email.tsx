@@ -1,62 +1,42 @@
-/* import { useState } from "react";
-import emailjs from "emailjs-com";
+interface EMailProps {
+  isLoading: boolean;
+  isSubmitted: boolean;
+  handleSubmit: React.MouseEventHandler<HTMLButtonElement>;
+}
 
-function Email() {
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setIsLoading(true);
-
-    const templateParams = {
-      forename: e.target.forename.value,
-      surname: e.target.surname.value,
-      email: e.target.email.value,
-      message: e.target.message.value,
-    };
-
-    emailjs
-      .send(
-        "service_vxcsu4d",
-        "template_8iae8tg",
-        templateParams,
-        "P_0aHI8FhelwPjRN0"
-      )
-      .then((response) => {
-        console.log("Email sent:", response);
-        setIsSubmitted(true);
-      })
-      .catch((error) => {
-        console.error("Email failed to send:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+const Email: React.FC<EMailProps> = (props) => {
+  const { isLoading, handleSubmit, isSubmitted } = props;
 
   return (
     <>
-      <div className="input-group input-group-lg mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Send via E-Mail"
-          aria-label="Send via E-Mail"
-          aria-describedby="button-addon2"
-        ></input>
-        <button
-          className="btn btn-outline-secondary"
-          type="button"
-          id="button-addon2"
-        >
-          Send
-        </button>
+      {/* Inputfield Send E-Mail */}
+      <div className="mb-3">
+        {!isSubmitted ? (
+          <div className="input-group input-group-lg mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Send via E-Mail"
+              aria-label="Send via E-Mail"
+              aria-describedby="button-addon2"
+            ></input>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              disabled={isLoading}
+              onClick={handleSubmit}
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </button>
+          </div>
+        ) : (
+          <div className="alert alert-success" role="alert">
+            E-Mail was successfully sent.
+          </div>
+        )}
       </div>
     </>
   );
-}
+};
 
 export default Email;
- */
