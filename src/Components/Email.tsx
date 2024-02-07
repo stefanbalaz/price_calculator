@@ -1,11 +1,15 @@
+import { useState } from "react";
+
 interface EMailProps {
   isLoading: boolean;
   isSubmitted: boolean;
-  handleSubmit: React.MouseEventHandler<HTMLButtonElement>;
+  /*   handleSubmit: React.MouseEventHandler<HTMLButtonElement>; */
+  handleSubmit: (email: string) => void;
 }
 
 const Email: React.FC<EMailProps> = (props) => {
   const { isLoading, handleSubmit, isSubmitted } = props;
+  const [email, setEmail] = useState<string>("");
 
   return (
     <>
@@ -19,12 +23,18 @@ const Email: React.FC<EMailProps> = (props) => {
               placeholder="Send via E-Mail"
               aria-label="Send via E-Mail"
               aria-describedby="button-addon2"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             ></input>
             <button
               type="button"
               className="btn btn-outline-secondary"
               disabled={isLoading}
-              onClick={handleSubmit}
+              /*  onClick={() => handleSubmit(email)} */
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit(email);
+              }}
             >
               {isLoading ? "Sending..." : "Send"}
             </button>

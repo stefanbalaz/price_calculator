@@ -192,10 +192,10 @@ function App(): JSX.Element {
     }
   };
 
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-
+  const handleSubmit: (email: string) => void = (email) => {
     setIsLoading(true);
+
+    console.log("Email submitted:", email);
 
     const templateParams = {
       drinkPriceNet: drinkPriceNet,
@@ -220,6 +220,7 @@ function App(): JSX.Element {
       bottleReceivedAmount: bottleReceivedAmount,
       crateReceivedAmount: crateReceivedAmount,
       crateSoldAmount: crateSoldAmount,
+      email: email,
     };
 
     console.log("TemplateParams inside handle submit", templateParams);
