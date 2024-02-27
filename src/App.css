@@ -45,3 +45,12 @@ h1 {
   border-color: #8d6254; /* Your custom border color when focused */
   box-shadow: 0 0 0 0.25rem rgba(104, 79, 71, 0.25); /* Your custom box shadow when focused */
 }
+
+.btn-outline-secondary {
+  --bs-btn-color: #ffffff;
+}
+
+.btn:disabled {
+  /*  background-color: #726947; */
+  color: #8d6254;
+}
