@@ -11,7 +11,7 @@ import Accordion from "./Components/Accordion";
 import { calculatePrice } from "./services/calculatePrice";
 
 function App(): JSX.Element {
-  const [drinkPriceNet, setDrinkPriceNet] = useState<number | null>(0.75);
+  const [drinkPriceNet, setDrinkPriceNet] = useState<number | null>(1.0);
   const [drinkSoldAmount, setDrinkSoldAmount] = useState<number | null>(0);
   const [crateSoldAmount, setCrateSoldAmount] = useState<number | null>(0);
 
@@ -25,7 +25,8 @@ function App(): JSX.Element {
   const [drinkPriceGross, setDrinkPriceGross] = useState<number | null>(null);
   const [bottlePrice] = useState<number | null>(0.13);
   const [cratePrice] = useState<number | null>(1.66);
-  const [vat] = useState<number | null>(0.2);
+  const [vat] = useState<number | null>(0.19);
+  const [sugarCaffeineTax] = useState<number | null>(0.3 * 0.33);
   //const [vatMultiplier, setVatMultiplier] = useState<number | null>(null);
   const [drinkPriceTotalNet, setDrinkPriceTotalNet] = useState<number | null>(
     null
@@ -72,6 +73,7 @@ function App(): JSX.Element {
       bottleReceivedAmount,
       crateReceivedAmount,
       vat,
+      sugarCaffeineTax,
       bottlePrice,
       cratePrice
     );
@@ -83,6 +85,7 @@ function App(): JSX.Element {
     bottleReceivedAmount,
     crateReceivedAmount,
     vat,
+    sugarCaffeineTax,
     bottlePrice,
     cratePrice,
   ]);
@@ -116,6 +119,7 @@ function App(): JSX.Element {
       bottleReceivedAmount,
       crateReceivedAmount,
       vat,
+      sugarCaffeineTax,
       bottlePrice,
       cratePrice
     );
@@ -199,7 +203,7 @@ function App(): JSX.Element {
     console.log("Email submitted:", email);
 
     const templateParams = {
-      drinkPriceNet: drinkPriceNet,
+      drinkPriceNet: drinkPriceNet?.toFixed(2),
       drinkPriceGross: (drinkPriceGross ?? 0).toFixed(2),
       cratePrice: cratePrice,
       bottlePrice: bottlePrice,
@@ -290,6 +294,7 @@ function App(): JSX.Element {
                 totalPriceNet={totalPriceNet}
                 totalPriceGross={totalPriceGross}
                 vat={vat}
+                sugarCaffeineTax={sugarCaffeineTax}
                 drinkPriceNet={drinkPriceNet}
                 bottlePrice={bottlePrice}
                 cratePrice={cratePrice}

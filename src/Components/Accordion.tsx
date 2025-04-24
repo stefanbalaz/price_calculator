@@ -9,6 +9,7 @@ interface AccordionProps {
   totalPriceNet: number | null;
   totalPriceGross: number | null;
   vat: number | null;
+  sugarCaffeineTax: number | null;
   drinkPriceNet: number | null;
   bottlePrice: number | null;
   cratePrice: number | null;
@@ -33,6 +34,7 @@ const Accordion: React.FC<AccordionProps> = (props) => {
     totalPriceNet,
     totalPriceGross,
     vat,
+    sugarCaffeineTax,
     drinkPriceNet,
     bottlePrice,
     cratePrice,
@@ -75,6 +77,8 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                     <th></th>
                     <th>Amount</th>
                     <th>Net</th>
+                    <th>VAT</th>
+                    <th>Sugar & Caffeine Tax</th>
                     <th>Gross</th>
                   </tr>
                 </thead>
@@ -83,6 +87,22 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                     <th>Drink Subtotal</th>
                     <td>+{drinkSoldAmount}</td>
                     <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>
+                      +
+                      {(
+                        (vat ?? 0) *
+                        (drinkSoldAmount ?? 0) *
+                        (drinkPriceNet ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
+                    <td>
+                      +
+                      {(
+                        (sugarCaffeineTax ?? 0) * (drinkSoldAmount ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
                     <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td>
                   </tr>
                   <tr>
@@ -98,6 +118,8 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                         : (bottlePriceSubtotal ?? 0).toFixed(2)}
                       €
                     </td>
+                    <td>0.00€</td>
+                    <td>0.00€</td>
                     <td>
                       {(bottlePriceSubtotal ?? 0) > 0
                         ? `+${(bottlePriceSubtotal ?? 0).toFixed(2)}`
@@ -118,6 +140,8 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                         : (cratePriceSubtotal ?? 0).toFixed(2)}
                       €
                     </td>
+                    <td>0.00€</td>
+                    <td>0.00€</td>
                     <td>
                       {(cratePriceSubtotal ?? 0) > 0
                         ? `+${(cratePriceSubtotal ?? 0).toFixed(2)}`
@@ -133,7 +157,8 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                         ? `+${(totalPriceNet ?? 0).toFixed(2)}€`
                         : `${(totalPriceNet ?? 0).toFixed(2)}€`}
                     </td>
-
+                    <td></td>
+                    <td></td>
                     <td>
                       {(totalPriceGross ?? 0) > 0
                         ? `+${(totalPriceGross ?? 0).toFixed(2)}€`
@@ -171,30 +196,34 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                 <thead>
                   <tr>
                     <th></th>
-                    <th>VAT</th>
                     <th>Net</th>
+                    <th>VAT</th>
+                    <th>Sugar & Caffeine Tax</th>
                     <th>Gross</th>
                   </tr>
                 </thead>
                 <tbody className="table-group-divider">
                   <tr>
                     <th>Drink</th>
-                    <td>{(vat ?? 0) * 100}%</td>
                     <td>{drinkPriceNet || 0}€</td>
+                    <td>{(vat ?? 0) * 100}%</td>
+                    <td>{(sugarCaffeineTax ?? 0).toFixed(3)}€</td>
                     <td>
                       {((drinkPriceNet ?? 0) * (1 + (vat || 0))).toFixed(2)}€
                     </td>
                   </tr>
                   <tr>
                     <th>Bottle</th>
-                    <td>0%</td>
                     <td>{bottlePrice || 0}€</td>
+                    <td>0%</td>
+                    <td>0%</td>
                     <td>{bottlePrice || 0}€</td>
                   </tr>
                   <tr>
                     <th>Crate</th>
-                    <td>0%</td>
                     <td>{cratePrice || 0}€</td>
+                    <td>0%</td>
+                    <td>0%</td>
                     <td>{cratePrice || 0}€</td>
                   </tr>
                 </tbody>
@@ -232,20 +261,60 @@ const Accordion: React.FC<AccordionProps> = (props) => {
                     <th></th>
                     <th>Amount</th>
                     <th>Net</th>
+                    <th>VAT</th>
+                    <th>Sugar & Caffeine Tax</th>
                     <th>Gross</th>
                   </tr>
                 </thead>
                 <tbody className="table-group-divider">
                   <tr>
                     <th>Sold</th>
+                    {/* <td>+{drinkSoldAmount}</td>
+                    <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td> */}
                     <td>+{drinkSoldAmount}</td>
                     <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>
+                      +
+                      {(
+                        (vat ?? 0) *
+                        (drinkSoldAmount ?? 0) *
+                        (drinkPriceNet ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
+                    <td>
+                      +
+                      {(
+                        (sugarCaffeineTax ?? 0) * (drinkSoldAmount ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
                     <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td>
                   </tr>
                   <tr>
                     <th>Total</th>
+                    {/* <td>+{drinkSoldAmount}</td>
+                    <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td> */}
                     <td>+{drinkSoldAmount}</td>
                     <td>+{(drinkPriceTotalNet ?? 0).toFixed(2)}€</td>
+                    <td>
+                      +
+                      {(
+                        (vat ?? 0) *
+                        (drinkSoldAmount ?? 0) *
+                        (drinkPriceNet ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
+                    <td>
+                      +
+                      {(
+                        (sugarCaffeineTax ?? 0) * (drinkSoldAmount ?? 0)
+                      ).toFixed(2)}
+                      €
+                    </td>
                     <td>+{(drinkPriceTotalGross ?? 0).toFixed(2)}€</td>
                   </tr>
                 </tbody>

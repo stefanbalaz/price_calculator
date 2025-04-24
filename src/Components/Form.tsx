@@ -30,7 +30,7 @@ const Form: React.FC<FormProps> = (props) => {
               step="0.01"
               className="form-control"
               id="drinkPriceNet"
-              placeholder="Drink Price (Net)"
+              placeholder="Drink Price (Net - No VAT, No Sugar & Caffeine Tax)"
               value={drinkPriceNet !== null ? drinkPriceNet : ""}
               /* value={drinkPriceNet ?? ""} */
               onChange={(e) =>
@@ -40,7 +40,9 @@ const Form: React.FC<FormProps> = (props) => {
                 )
               }
             />
-            <label htmlFor="floatingInputGroup1">Drink Price (Net)</label>
+            <label htmlFor="floatingInputGroup1">
+              Drink Price (Net - No VAT, No Sugar & Caffeine Tax)
+            </label>
           </div>
           <span className="input-group-text">€</span>
         </div>

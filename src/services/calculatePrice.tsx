@@ -5,10 +5,12 @@ export function calculatePrice(
   bottleReceivedAmount: number | null,
   crateReceivedAmount: number | null,
   vat: number | null,
+  sugarCaffeineTax: number | null,
   bottlePrice: number | null,
   cratePrice: number | null
 ): {
   drinkPriceGross: number;
+  sugarCaffeineTaxTotal: number;
   totalPriceNet: number;
   totalPriceGross: number;
   drinkPriceTotalNet: number;
@@ -22,12 +24,18 @@ export function calculatePrice(
   bottleAmountSubtotal: number;
   crateAmountSubtotal: number;
 } {
-  /*   Vat multiplier */
+  /* Vat multiplier */
   const vatMultiplier = vat !== null ? 1 + vat : 1;
   console.log("vatMultiplier", vatMultiplier);
 
-  /*   Drink Price Gross */
-  const drinkPriceGross = (drinkPriceNet || 0) * vatMultiplier;
+  /* Sugar & Caffeine Tax Total */
+  const sugarCaffeineTaxTotal =
+    (drinkSoldAmount || 0) * (sugarCaffeineTax || 0);
+  console.log("sugarCaffeineTaxTotal", sugarCaffeineTaxTotal);
+
+  /* Drink Price Gross */
+  const drinkPriceGross =
+    (drinkPriceNet || 0) * vatMultiplier + (sugarCaffeineTax || 0);
   console.log("drinkPriceGross", drinkPriceGross);
 
   /* Drink Price Total Net */
@@ -36,14 +44,15 @@ export function calculatePrice(
 
   /* Drink Price Total Gross */
   const drinkPriceTotalGross =
-    (drinkSoldAmount || 0) * ((drinkPriceNet || 0) * vatMultiplier);
+    (drinkSoldAmount || 0) * ((drinkPriceNet || 0) * vatMultiplier) +
+    (drinkSoldAmount || 0) * (sugarCaffeineTax || 0);
   console.log("drinkPriceTotalGross", drinkPriceTotalGross);
 
-  /* Bollte Price Sold Total */
+  /* Bottle Price Sold Total */
   const bottlePriceSoldTotal = (drinkSoldAmount || 0) * (bottlePrice || 0);
   console.log("bottlePriceSoldTotal", bottlePriceSoldTotal);
 
-  /* Bollte Price Received Total */
+  /* Bottle Price Received Total */
   const bottlePriceReceivedTotal =
     (bottleReceivedAmount || 0) * (bottlePrice || 0);
   console.log("bottlePriceReceivedTotal", bottlePriceReceivedTotal);
@@ -87,6 +96,7 @@ export function calculatePrice(
   /* Total Price Gross */
   const totalPriceGross =
     drinkPriceTotalGross +
+    sugarCaffeineTaxTotal +
     bottlePriceSoldTotal -
     bottlePriceReceivedTotal +
     cratePriceSoldTotal -
@@ -95,6 +105,7 @@ export function calculatePrice(
 
   return {
     drinkPriceGross,
+    sugarCaffeineTaxTotal,
     totalPriceNet,
     totalPriceGross,
     // vatMultiplier,
